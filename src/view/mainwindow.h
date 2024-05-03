@@ -48,8 +48,9 @@ class MainWindow : public QMainWindow {
   void on_getScreenBMP_clicked();
   void on_getScreenGIF_clicked();
   void on_getScreenJPG_clicked();
+  void on_centerBtn_clicked();
 
- private:
+private:
   Ui::MainWindow *ui;
   glView mView;
   s21::Data myData{};

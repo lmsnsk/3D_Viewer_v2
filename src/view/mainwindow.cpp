@@ -123,7 +123,6 @@ void MainWindow::directionChanged(int id) {
       direct = s21::DIRECT_Z;
       break;
   }
-  // qDebug() << "direct" << direct;
 }
 
 void MainWindow::scale_foo() {
@@ -212,6 +211,14 @@ void MainWindow::on_vertexSizeAccept_clicked() {
 void MainWindow::on_perspective_stateChanged(int arg1) {
   mView.projection_type = arg1 ? 1 : 0;
   mView.initializeGL();
+  if (!is_model_opened) return;
+  mView.drawScene(myData);
+  mView.update();
+}
+
+void MainWindow::on_centerBtn_clicked() {
+  mView.initializeGL();
+  auto_scale_model(myData);
   if (!is_model_opened) return;
   mView.drawScene(myData);
   mView.update();
