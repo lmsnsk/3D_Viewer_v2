@@ -13,7 +13,7 @@ SOURCES += \
     glview.cpp \
     main.cpp \
     mainwindow.cpp \
-    ../modules/parcer.cpp \
+    ../modules/parser.cpp \
     ../modules/transforms.cpp \
     ../controller/controller.cpp
 

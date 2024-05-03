@@ -3,7 +3,6 @@
 
 #include <cmath>
 #include <fstream>
-#include <iostream>  // debug
 #include <string>
 #include <vector>
 
@@ -34,9 +33,9 @@ class Data {
   std::vector<Face> faces_arr_;
 };
 
-class Parcer {
+class Parser {
  public:
-  void parcer(Data& data, std::string filename);
+  void parser(Data& data, std::string filename);
 
  private:
   void getValues(Data& data, std::string& buffer);
@@ -50,6 +49,9 @@ class Transformer {
   double transform_matrix[MATRIX_SIZE][MATRIX_SIZE];
 
  public:
+  Transformer() : transform_matrix(){};
+  ~Transformer(){};
+
   void moving(Data& data, double dx, double dy, double dz);
 
   void scaling(Data& data, double scale);

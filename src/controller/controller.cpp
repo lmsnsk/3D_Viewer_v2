@@ -1,8 +1,8 @@
 #include "controller.hpp"
 
-void parse_file(std::string filename, s21::Data &data) {
-  s21::Parcer p;
-  p.parcer(data, filename);
+void parse_file(const std::string &filename, s21::Data &data) {
+  s21::Parser p;
+  p.parser(data, filename);
 };
 
 void auto_scale_model(s21::Data &data) {

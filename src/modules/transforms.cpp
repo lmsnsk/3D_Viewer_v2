@@ -101,22 +101,4 @@ void Transformer::auto_scaling(Data& data) {
   scaling(data, scale);
 }
 
-// void Transformer::perspective_switch(Data& data, int is_on) {
-//   double ratio = 0.03;
-//   const unsigned size = data.getVertexArray().size();
-//   if (is_on) {
-//     for (unsigned i = 0; i < size; i++) {
-//       data.getVertexArray()[i].x *= pow(2, data.getVertexArray()[i].z *
-//       ratio); data.getVertexArray()[i].y *= pow(2, data.getVertexArray()[i].z
-//       * ratio);
-//     }
-//   } else {
-//     for (unsigned i = 0; i < size; i++) {
-//       data.getVertexArray()[i].x /= pow(2, data.getVertexArray()[i].z *
-//       ratio); data.getVertexArray()[i].y /= pow(2, data.getVertexArray()[i].z
-//       * ratio);
-//     }
-//   }
-// }
-
 }  // namespace s21
