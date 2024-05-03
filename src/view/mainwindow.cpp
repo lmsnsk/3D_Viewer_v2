@@ -50,30 +50,24 @@ MainWindow::MainWindow(QWidget *parent)
       new QRegExpValidator(QRegExp("[0-9]*\\.?[0-9]*")));
 }
 
-MainWindow::~MainWindow() {
-  free_data(&myData);
-  delete ui;
-}
+MainWindow::~MainWindow() { delete ui; }
 
 void MainWindow::on_openFile_clicked() {
+  int error = 0;
   QString filePath = QFileDialog::getOpenFileName(
       this, tr("Open File"), "", tr("Text Files (*.obj);;All Files (*.*)"));
-  const char *filePath_C = nullptr;
-  if (!filePath.isEmpty()) {
-    QByteArray byteArray = filePath.toLocal8Bit();
-    filePath_C = byteArray.data();
-    // qDebug() << "Selected file path:" << filePath_C;
+  try {
+    parse_file(filePath.toStdString(), myData);
+  } catch (...) {
+    error = 1;
   }
-  int error = parcer(filePath_C, &myData);
-
   if (error) {
     ui->ErrorField->setStyleSheet("color:red;background:black");
     ui->ErrorField->setText(" Ошибка чтения файла!");
-    qDebug() << "Error reading file";
   } else {
     ui->ErrorField->setStyleSheet("color:#82ff7d;background:black");
     ui->ErrorField->setText(" Файл открыт успешно");
-    auto_scaling(&myData);
+    scale_model(myData);
     is_model_opened = true;
     QFileInfo fileInfo(filePath);
     QString fileName = fileInfo.fileName();
@@ -87,7 +81,6 @@ void MainWindow::on_openFile_clicked() {
     mView.drawScene(myData);
     mView.update();
   }
-  // qDebug() << "id:" << id;
 }
 
 void MainWindow::move_foo() {
@@ -97,17 +90,8 @@ void MainWindow::move_foo() {
   if (move_button == ui->moveBack) sign = -1;
 
   double step = sign * ui->step_moving->text().toDouble();
-  switch (direct) {
-    case DIRECT_X:
-      moving(&myData, step, 0, 0);
-      break;
-    case DIRECT_Y:
-      moving(&myData, 0, step, 0);
-      break;
-    case DIRECT_Z:
-      moving(&myData, 0, 0, step);
-      break;
-  }
+
+  move_model(data, direct, step);
 
   mView.drawScene(myData);
   mView.update();
@@ -120,17 +104,8 @@ void MainWindow::rotate_foo() {
   if (rotate_button == ui->rotateBack) sign = -1;
 
   double step = sign * ui->angle_rotate->text().toDouble();
-  switch (direct) {
-    case DIRECT_X:
-      rotation_x(&myData, step);
-      break;
-    case DIRECT_Y:
-      rotation_y(&myData, step);
-      break;
-    case DIRECT_Z:
-      rotation_z(&myData, step);
-      break;
-  }
+
+  rotate_model(data, direct, step);
 
   mView.drawScene(myData);
   mView.update();
@@ -138,14 +113,14 @@ void MainWindow::rotate_foo() {
 
 void MainWindow::directionChanged(int id) {
   switch (id) {
-    case DIRECT_X:
-      direct = DIRECT_X;
+    case s21::DIRECT_X:
+      direct = s21::DIRECT_X;
       break;
-    case DIRECT_Y:
-      direct = DIRECT_Y;
+    case s21::DIRECT_Y:
+      direct = s21::DIRECT_Y;
       break;
-    case DIRECT_Z:
-      direct = DIRECT_Z;
+    case s21::DIRECT_Z:
+      direct = s21::DIRECT_Z;
       break;
   }
   // qDebug() << "direct" << direct;
@@ -154,7 +129,7 @@ void MainWindow::directionChanged(int id) {
 void MainWindow::scale_foo() {
   if (!is_model_opened) return;
   double scale = ui->scale_koef->text().toDouble();
-  scaling(&myData, scale);
+  scale_model(&myData, scale);
 
   mView.drawScene(myData);
   mView.update();

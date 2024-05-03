@@ -1,12 +1,15 @@
 #ifndef S21_3D_VIEWER
 #define S21_3D_VIEWER
 
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cmath>
+#include <fstream>
+#include <iostream>  // debug
+#include <string>
+#include <vector>
 
 namespace s21 {
+
+const int MATRIX_SIZE = 4;
 
 struct Vertex {
   double x;
@@ -15,40 +18,54 @@ struct Vertex {
 };
 
 struct Face {
-  unsigned* faces;
-  unsigned vert_in_face;
-};
-
-struct Data {
-  Vertex* vertices_arr;
-  Face* faces_arr;
-  unsigned vertices_count;
-  unsigned faces_count;
+  std::vector<unsigned> vertices;
+  unsigned vert_in_face{};
 };
 
 enum Direct { DIRECT_X, DIRECT_Y, DIRECT_Z };
 
-class Viewer {
+class Data {
  public:
-  Viewer(){};
-  ~Viewer(){};
+  std::vector<Vertex>& getVertexArray();
+  std::vector<Face>& getFaceArray();
 
-  int parcer(const char* filename, Data* data);
-
-  void free_data(Data* data);
-
-  void moving(Data* data, double dx, double dy, double dz);
-
-  void scaling(Data* data, double scale);
-
-  void rotation_x(Data* data, double alf);
-  void rotation_y(Data* data, double alf);
-  void rotation_z(Data* data, double alf);
-
-  void auto_scaling(Data* data);
-  void perspective_switch(Data* data, int is_on);
+ private:
+  std::vector<Vertex> vertices_arr_;
+  std::vector<Face> faces_arr_;
 };
 
-};  // namespace s21
+class Parcer {
+ public:
+  void parcer(Data& data, std::string filename);
+
+ private:
+  void getValues(Data& data, std::string& buffer);
+  void getFaces(Data& data, std::string& buffer);
+  void skipSpaces(std::string& str);
+  void getVertices(Data& data, std::string& buffer);
+};
+
+class Transformer {
+ private:
+  double transform_matrix[MATRIX_SIZE][MATRIX_SIZE];
+
+ public:
+  void moving(Data& data, double dx, double dy, double dz);
+
+  void scaling(Data& data, double scale);
+
+  void rotation_x(Data& data, double alf);
+  void rotation_y(Data& data, double alf);
+  void rotation_z(Data& data, double alf);
+
+  void auto_scaling(Data& data);
+  // void perspective_switch(Data& data, int is_on);
+
+ private:
+  void matrix_mul(Data& data,
+                  double transform_matrix[MATRIX_SIZE][MATRIX_SIZE]);
+};
+
+}  // namespace s21
 
 #endif  // S21_3D_VIEWER

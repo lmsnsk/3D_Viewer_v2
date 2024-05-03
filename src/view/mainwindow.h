@@ -10,7 +10,6 @@
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
-
 }
 QT_END_NAMESPACE
 
@@ -53,9 +52,9 @@ class MainWindow : public QMainWindow {
  private:
   Ui::MainWindow *ui;
   glView mView;
-  Data myData{};
+  s21::Data myData{};
   QButtonGroup *directionButtonGroup;
-  Direct direct;
+  s21::Direct direct;
   bool is_model_opened{false};
   int bmp_counter{};
   int jpg_counter{};
