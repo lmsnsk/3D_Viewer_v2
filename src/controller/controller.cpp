@@ -1,4 +1,4 @@
-#include "../s21_3D_Viewer.hpp"
+#include "controller.hpp"
 
 void parse_file(std::string filename, s21::Data &data) {
   s21::Parcer p;

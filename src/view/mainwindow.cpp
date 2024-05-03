@@ -20,9 +20,9 @@ MainWindow::MainWindow(QWidget *parent)
   connect(ui->scaleButton, SIGNAL(clicked()), this, SLOT(scale_foo()));
   connect(ui->saveSettings, SIGNAL(clicked()), this, SLOT(saveSettings()));
   directionButtonGroup = new QButtonGroup(this);
-  directionButtonGroup->addButton(ui->direct_X, DIRECT_X);
-  directionButtonGroup->addButton(ui->direct_Y, DIRECT_Y);
-  directionButtonGroup->addButton(ui->direct_Z, DIRECT_Z);
+  directionButtonGroup->addButton(ui->direct_X, s21::DIRECT_X);
+  directionButtonGroup->addButton(ui->direct_Y, s21::DIRECT_Y);
+  directionButtonGroup->addButton(ui->direct_Z, s21::DIRECT_Z);
 
   connect(directionButtonGroup, SIGNAL(buttonClicked(int)), this,
           SLOT(directionChanged(int)));
@@ -67,15 +67,15 @@ void MainWindow::on_openFile_clicked() {
   } else {
     ui->ErrorField->setStyleSheet("color:#82ff7d;background:black");
     ui->ErrorField->setText(" Файл открыт успешно");
-    scale_model(myData);
+    auto_scale_model(myData);
     is_model_opened = true;
     QFileInfo fileInfo(filePath);
     QString fileName = fileInfo.fileName();
     ui->labelName->setText("Название файла: " + fileName);
     ui->labelVer->setText("Количество вершин: " +
-                          QString::number(myData.vertices_count));
+                          QString::number(myData.getVertexArray().size()));
     ui->labelPol->setText("Количество полигонов: " +
-                          QString::number(myData.faces_count));
+                          QString::number(myData.getFaceArray().size()));
     ui->labelPath->setText(filePath);
 
     mView.drawScene(myData);
@@ -91,7 +91,7 @@ void MainWindow::move_foo() {
 
   double step = sign * ui->step_moving->text().toDouble();
 
-  move_model(data, direct, step);
+  move_model(myData, direct, step);
 
   mView.drawScene(myData);
   mView.update();
@@ -105,7 +105,7 @@ void MainWindow::rotate_foo() {
 
   double step = sign * ui->angle_rotate->text().toDouble();
 
-  rotate_model(data, direct, step);
+  rotate_model(myData, direct, step);
 
   mView.drawScene(myData);
   mView.update();
@@ -129,7 +129,7 @@ void MainWindow::directionChanged(int id) {
 void MainWindow::scale_foo() {
   if (!is_model_opened) return;
   double scale = ui->scale_koef->text().toDouble();
-  scale_model(&myData, scale);
+  scale_model(myData, scale);
 
   mView.drawScene(myData);
   mView.update();
@@ -279,21 +279,21 @@ void MainWindow::readSettings(std::ifstream &inFile) {
       iss >> state;
       if (state == 1) {
         ui->direct_X->setChecked(true);
-        directionChanged(DIRECT_X);
+        directionChanged(s21::DIRECT_X);
       }
     } else if (key == "Y:") {
       int state;
       iss >> state;
       if (state == 1) {
         ui->direct_Y->setChecked(true);
-        directionChanged(DIRECT_Y);
+        directionChanged(s21::DIRECT_Y);
       }
     } else if (key == "Z:") {
       int state;
       iss >> state;
       if (state == 1) {
         ui->direct_Z->setChecked(true);
-        directionChanged(DIRECT_Z);
+        directionChanged(s21::DIRECT_Z);
       }
     } else if (key == "move:") {
       std::string value;

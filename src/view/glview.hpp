@@ -4,7 +4,7 @@
 #include <QGLWidget>
 #include <fstream>
 
-#include "../controller/controller.cpp"
+#include "../controller/controller.hpp"
 
 class glView : public QGLWidget {
  public:
@@ -21,7 +21,7 @@ class glView : public QGLWidget {
   void initializeGL() override;
   void resizeGL(int w, int h) override;
   void paintGL() override;
-  void drawScene(const s21::Data &myDat);
+  void drawScene(s21::Data &myDat);
 };
 
 #endif  // GLVIEW_HPP

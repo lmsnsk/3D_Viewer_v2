@@ -32,7 +32,7 @@ void glView::initializeGL() {
 
 void glView::resizeGL(int w, int h) { glViewport(0, 0, w, h); }
 
-void glView::drawScene(const Data &myData) {
+void glView::drawScene(s21::Data &myData) {
   qglClearColor(plotColor);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   qglColor(lineColor);
@@ -43,19 +43,19 @@ void glView::drawScene(const Data &myData) {
   }
   glBegin(GL_LINES);
 
-  for (unsigned int i = 0; i < myData.faces_count; ++i) {
-    if (myData.faces_arr[i].faces != NULL) {
-      for (unsigned int j = 0; j < myData.faces_arr[i].vert_in_face; ++j) {
-        int vertexIndex1 = myData.faces_arr[i].faces[j];
+  for (unsigned int i = 0; i < myData.getFaceArray().size(); ++i) {
+    if (!myData.getFaceArray()[i].vertices.empty()) {
+      for (unsigned int j = 0; j < myData.getFaceArray()[i].vert_in_face; ++j) {
+        int vertexIndex1 = myData.getFaceArray()[i].vertices[j];
         int vertexIndex2 =
-            myData.faces_arr[i]
-                .faces[(j + 1) % myData.faces_arr[i].vert_in_face];
-        glVertex3f(myData.vertices_arr[vertexIndex1 - 1].x,
-                   myData.vertices_arr[vertexIndex1 - 1].y,
-                   myData.vertices_arr[vertexIndex1 - 1].z);
-        glVertex3f(myData.vertices_arr[vertexIndex2 - 1].x,
-                   myData.vertices_arr[vertexIndex2 - 1].y,
-                   myData.vertices_arr[vertexIndex2 - 1].z);
+            myData.getFaceArray()[i]
+                .vertices[(j + 1) % myData.getFaceArray()[i].vert_in_face];
+        glVertex3f(myData.getVertexArray()[vertexIndex1 - 1].x,
+                   myData.getVertexArray()[vertexIndex1 - 1].y,
+                   myData.getVertexArray()[vertexIndex1 - 1].z);
+        glVertex3f(myData.getVertexArray()[vertexIndex2 - 1].x,
+                   myData.getVertexArray()[vertexIndex2 - 1].y,
+                   myData.getVertexArray()[vertexIndex2 - 1].z);
       }
     }
   }
@@ -68,10 +68,10 @@ void glView::drawScene(const Data &myData) {
     glBegin(GL_POINTS);
     qglColor(vertexColor);
 
-    for (unsigned i = 0; i < myData.vertices_count; i++) {
-      if (myData.vertices_arr != NULL) {
-        glVertex3f(myData.vertices_arr[i].x, myData.vertices_arr[i].y,
-                   myData.vertices_arr[i].z);
+    for (unsigned i = 0; i < myData.getVertexArray().size(); i++) {
+      if (!myData.getVertexArray().empty()) {
+        glVertex3f(myData.getVertexArray()[i].x, myData.getVertexArray()[i].y,
+                   myData.getVertexArray()[i].z);
       }
     }
 

@@ -13,13 +13,15 @@ SOURCES += \
     glview.cpp \
     main.cpp \
     mainwindow.cpp \
-    ../modules/parcer.c \
-    ../modules/transforms.c
+    ../modules/parcer.cpp \
+    ../modules/transforms.cpp \
+    ../controller/controller.cpp
 
 HEADERS += \
     glview.hpp \
     mainwindow.h \
-    ../s21_3D_Viewer.h
+    ../controller/controller.hpp \
+    ../s21_3D_Viewer.hpp
 
 FORMS += \
     mainwindow.ui
