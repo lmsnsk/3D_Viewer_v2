@@ -31,8 +31,9 @@ void Transformer::matrix_mul(
 }
 
 void Transformer::moving(Data& data, double dx, double dy, double dz) {
+  double k = 0.05;
   double moving_matrix[MATRIX_SIZE][MATRIX_SIZE] = {
-      {1, 0, 0, dx}, {0, 1, 0, dy}, {0, 0, 1, dz}, {0, 0, 0, 1}};
+      {1, 0, 0, dx * k}, {0, 1, 0, dy * k}, {0, 0, 1, dz * k}, {0, 0, 0, 1}};
   matrix_mul(data, moving_matrix);
 }
 

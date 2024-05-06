@@ -50,13 +50,23 @@ class MainWindow : public QMainWindow {
   void on_getScreenJPG_clicked();
   void on_centerBtn_clicked();
 
-private:
+ protected:
+  void wheelEvent(QWheelEvent *) override;
+  void mousePressEvent(QMouseEvent *event) override;
+  void mouseMoveEvent(QMouseEvent *event) override;
+  void mouseReleaseEvent(QMouseEvent *event) override;
+
+ private:
   Ui::MainWindow *ui;
   glView mView;
   s21::Data myData{};
   s21::Controller controller;
   QButtonGroup *directionButtonGroup;
   s21::Direct direct;
+  QPoint lastMousePos;
+  float translateX = 0.0f, translateY = 0.0f;
+  bool leftMouseButtonPressed{false};
+  bool rightMouseButtonPressed{false};
   bool is_model_opened{false};
   int bmp_counter{};
   int jpg_counter{};

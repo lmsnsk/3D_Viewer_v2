@@ -6,6 +6,7 @@
 #include <QFileDialog>
 #include <QProcess>
 #include <QThread>
+#include <QWheelEvent>
 #include <sstream>
 
 #include "ui_mainwindow.h"
@@ -48,6 +49,7 @@ MainWindow::MainWindow(QWidget *parent)
       new QRegExpValidator(QRegExp("[0-9]*\\.?[0-9]*")));
   ui->angle_rotate->setValidator(
       new QRegExpValidator(QRegExp("[0-9]*\\.?[0-9]*")));
+  mView.update();
 }
 
 MainWindow::~MainWindow() { delete ui; }
@@ -106,6 +108,54 @@ void MainWindow::rotate_foo() {
   double step = sign * ui->angle_rotate->text().toDouble();
 
   controller.rotateModel(myData, direct, step);
+
+  mView.drawScene(myData);
+  mView.update();
+}
+
+void MainWindow::mousePressEvent(QMouseEvent *event) {
+  if (event->button() == Qt::LeftButton) {
+    leftMouseButtonPressed = true;
+    lastMousePos = event->pos();
+  }
+  if (event->button() == Qt::RightButton) {
+    rightMouseButtonPressed = true;
+    lastMousePos = event->pos();
+  }
+}
+
+void MainWindow::mouseMoveEvent(QMouseEvent *event) {
+  if (leftMouseButtonPressed || rightMouseButtonPressed) {
+    int dx = event->x() - lastMousePos.x();
+    int dy = event->y() - lastMousePos.y();
+
+    if (leftMouseButtonPressed) {
+      controller.moveModel(myData, s21::DIRECT_X, dx / 3);
+      controller.moveModel(myData, s21::DIRECT_Y, -dy / 3);
+      lastMousePos = event->pos();
+    } else {
+      controller.rotateModel(myData, s21::DIRECT_X, dy / 3);
+      controller.rotateModel(myData, s21::DIRECT_Y, dx / 3);
+      lastMousePos = event->pos();
+    }
+
+    mView.drawScene(myData);
+    mView.update();
+  }
+}
+
+void MainWindow::mouseReleaseEvent(QMouseEvent *event) {
+  if (event->button() == Qt::LeftButton) {
+    leftMouseButtonPressed = false;
+  }
+}
+
+void MainWindow::wheelEvent(QWheelEvent *event) {
+  float delta = event->angleDelta().y() / 120.0f;
+  if (delta > 0)
+    controller.scaleModel(myData, 1.1);
+  else
+    controller.scaleModel(myData, 0.9);
 
   mView.drawScene(myData);
   mView.update();

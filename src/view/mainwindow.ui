@@ -946,6 +946,12 @@
       </disabled>
      </palette>
     </property>
+    <property name="cursor">
+     <cursorShape>SizeAllCursor</cursorShape>
+    </property>
+    <property name="mouseTracking">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QPushButton" name="openFile">
     <property name="geometry">
@@ -2422,8 +2428,8 @@
     <property name="geometry">
      <rect>
       <x>170</x>
-      <y>175</y>
-      <width>111</width>
+      <y>180</y>
+      <width>131</width>
       <height>21</height>
      </rect>
     </property>
@@ -2541,7 +2547,7 @@
      <rect>
       <x>170</x>
       <y>360</y>
-      <width>111</width>
+      <width>131</width>
       <height>21</height>
      </rect>
     </property>
@@ -2602,7 +2608,7 @@
      <rect>
       <x>170</x>
       <y>255</y>
-      <width>111</width>
+      <width>131</width>
       <height>21</height>
      </rect>
     </property>
