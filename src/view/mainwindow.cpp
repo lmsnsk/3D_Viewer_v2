@@ -148,6 +148,14 @@ void MainWindow::mouseReleaseEvent(QMouseEvent *event) {
   if (event->button() == Qt::LeftButton) {
     leftMouseButtonPressed = false;
   }
+  if (event->button() == Qt::LeftButton) {
+    rightMouseButtonPressed = false;
+  }
+  if (event->button() == Qt::MidButton) {
+    controller.autoScaleModel(myData);
+    mView.drawScene(myData);
+    mView.update();
+  }
 }
 
 void MainWindow::wheelEvent(QWheelEvent *event) {
