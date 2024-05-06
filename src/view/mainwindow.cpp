@@ -57,7 +57,7 @@ void MainWindow::on_openFile_clicked() {
   QString filePath = QFileDialog::getOpenFileName(
       this, tr("Open File"), "", tr("Text Files (*.obj);;All Files (*.*)"));
   try {
-    parse_file(filePath.toStdString(), myData);
+    controller.parseFile(filePath.toStdString(), myData);
   } catch (...) {
     error = 1;
   }
@@ -67,7 +67,7 @@ void MainWindow::on_openFile_clicked() {
   } else {
     ui->ErrorField->setStyleSheet("color:#82ff7d;background:black");
     ui->ErrorField->setText(" Файл открыт успешно");
-    auto_scale_model(myData);
+    controller.autoScaleModel(myData);
     is_model_opened = true;
     QFileInfo fileInfo(filePath);
     QString fileName = fileInfo.fileName();
@@ -91,7 +91,7 @@ void MainWindow::move_foo() {
 
   double step = sign * ui->step_moving->text().toDouble();
 
-  move_model(myData, direct, step);
+  controller.moveModel(myData, direct, step);
 
   mView.drawScene(myData);
   mView.update();
@@ -105,7 +105,7 @@ void MainWindow::rotate_foo() {
 
   double step = sign * ui->angle_rotate->text().toDouble();
 
-  rotate_model(myData, direct, step);
+  controller.rotateModel(myData, direct, step);
 
   mView.drawScene(myData);
   mView.update();
@@ -128,7 +128,7 @@ void MainWindow::directionChanged(int id) {
 void MainWindow::scale_foo() {
   if (!is_model_opened) return;
   double scale = ui->scale_koef->text().toDouble();
-  scale_model(myData, scale);
+  controller.scaleModel(myData, scale);
 
   mView.drawScene(myData);
   mView.update();
@@ -218,7 +218,7 @@ void MainWindow::on_perspective_stateChanged(int arg1) {
 
 void MainWindow::on_centerBtn_clicked() {
   mView.initializeGL();
-  auto_scale_model(myData);
+  controller.autoScaleModel(myData);
   if (!is_model_opened) return;
   mView.drawScene(myData);
   mView.update();

@@ -54,6 +54,7 @@ private:
   Ui::MainWindow *ui;
   glView mView;
   s21::Data myData{};
+  s21::Controller controller;
   QButtonGroup *directionButtonGroup;
   s21::Direct direct;
   bool is_model_opened{false};

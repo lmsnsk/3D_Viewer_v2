@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "../s21_3D_Viewer.hpp"
 
 namespace s21 {
@@ -61,6 +63,7 @@ void Parser::parser(Data& data, std::string filename) {
     throw "Error";
   }
   std::string buffer;
+  buffer.clear();
   while (std::getline(file, buffer)) {
     getValues(data, buffer);
     buffer.clear();
