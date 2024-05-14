@@ -27,6 +27,7 @@ class Data {
  public:
   std::vector<Vertex>& getVertexArray();
   std::vector<Face>& getFaceArray();
+  void clearData();
 
  private:
   std::vector<Vertex> vertices_arr_;
@@ -47,6 +48,7 @@ class Parser {
 class Transformer {
  private:
   double transform_matrix[MATRIX_SIZE][MATRIX_SIZE];
+  double factor{0.05};
 
  public:
   Transformer() : transform_matrix(){};
@@ -61,7 +63,6 @@ class Transformer {
   void rotation_z(Data& data, double alf);
 
   void auto_scaling(Data& data);
-  // void perspective_switch(Data& data, int is_on);
 
  private:
   void matrix_mul(Data& data,

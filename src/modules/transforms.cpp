@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "../s21_3D_Viewer.hpp"
 
 namespace s21 {
@@ -31,9 +33,10 @@ void Transformer::matrix_mul(
 }
 
 void Transformer::moving(Data& data, double dx, double dy, double dz) {
-  double k = 0.05;
-  double moving_matrix[MATRIX_SIZE][MATRIX_SIZE] = {
-      {1, 0, 0, dx * k}, {0, 1, 0, dy * k}, {0, 0, 1, dz * k}, {0, 0, 0, 1}};
+  double moving_matrix[MATRIX_SIZE][MATRIX_SIZE] = {{1, 0, 0, dx * factor},
+                                                    {0, 1, 0, dy * factor},
+                                                    {0, 0, 1, dz * factor},
+                                                    {0, 0, 0, 1}};
   matrix_mul(data, moving_matrix);
 }
 
@@ -97,8 +100,7 @@ void Transformer::auto_scaling(Data& data) {
   double scale = (range_x > range_y)
                      ? ((range_z > range_y) ? range_y : range_z)
                      : ((range_z > range_x) ? range_x : range_z);
-
-  moving(data, -dx, -dy, -dz);
+  moving(data, -dx / factor, -dy / factor, -dz / factor);
   scaling(data, scale);
 }
 

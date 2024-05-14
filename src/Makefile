@@ -8,7 +8,7 @@ FILETEST=tests/*
 FILEREPORT=s21_test_report
 FILETESTO=s21_test
 DIRREPORT=report
-COVFLAG=-fprofile-arcs -ftest-coverage
+COVFLAG=-fprofile-arcs -ftest-coverage 
 ASAN=-g -fsanitize=address
 
 OS = $(shell uname)
@@ -79,7 +79,7 @@ rep: gcov_report
 
 clean:
 	rm -rf *.o *.a *.gcno *.gcda *.info *.log $(DIRREPORT) $(FILETESTO) \
-	$(FILEREPORT) ./build* ./dist ./app
+	$(FILEREPORT) ./build* ./dist ./app *.gif *.jpeg *.bmp
 
 #style
 cpp:

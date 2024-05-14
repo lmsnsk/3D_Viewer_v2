@@ -46,7 +46,7 @@ TEST(Viewer, transforms_move) {
   c.moveModel(data, s21::DIRECT_X, 2);
   c.moveModel(data, s21::DIRECT_Y, 1);
   c.moveModel(data, s21::DIRECT_Z, 3.5);
-  EXPECT_EQ(data.getVertexArray()[0].x, 1.5);
+  EXPECT_EQ(data.getVertexArray()[0].x, -0.4);
   EXPECT_NO_THROW();
 }
 

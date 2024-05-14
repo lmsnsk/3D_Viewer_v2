@@ -8,6 +8,11 @@ std::vector<Vertex>& Data::getVertexArray() { return vertices_arr_; };
 
 std::vector<Face>& Data::getFaceArray() { return faces_arr_; };
 
+void Data::clearData() {
+  vertices_arr_.clear();
+  faces_arr_.clear();
+};
+
 void Parser::skipSpaces(std::string& str) {
   unsigned i{};
   for (; str[i] != ' '; ++i) {
@@ -63,7 +68,7 @@ void Parser::parser(Data& data, std::string filename) {
     throw "Error";
   }
   std::string buffer;
-  buffer.clear();
+  data.clearData();
   while (std::getline(file, buffer)) {
     getValues(data, buffer);
     buffer.clear();
